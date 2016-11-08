@@ -24,24 +24,22 @@
         android:layout_alignParentEnd="true" />
 
     <Button
-        android:text="Button"
+        android:text="Check Weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:id="@+id/checkButton"
-        tools:text="Check Weather"
         android:layout_below="@+id/cityField"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
     <TextView
-        android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
-        tools:text="Type in a city name for the weather"
         android:textAppearance="@android:style/TextAppearance.Large"
         android:layout_marginTop="62dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:text="Type in your city name for weather" />
 </RelativeLayout>

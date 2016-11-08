@@ -1,6 +1,7 @@
 package com.weatherapp.shubhamsorte.myapplication;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static java.sql.Types.NULL;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = MainActivity.class.getSimpleName();
@@ -67,6 +70,28 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr); // Got the json object here!! @shubhsin
 
                     System.out.println(jsonObj);
+
+                    if (jsonObj != null) {
+                        JSONObject queryObject = jsonObj.getJSONObject("query");
+                        JSONObject resultObject = queryObject.getJSONObject("results");
+                        JSONObject channelObject = resultObject.getJSONObject("channel");
+                        JSONObject itemObject = channelObject.getJSONObject("item");
+                        JSONObject conditionObject = itemObject.getJSONObject("condition");
+                        String tempString = conditionObject.getString("temp");
+                        String tempCond = conditionObject.getString("text");
+
+                        Float celciusTemp = (float)(((Integer.parseInt(tempString) - 32) * 5)/9);
+                        System.out.println(celciusTemp);
+                        System.out.println(tempCond);
+
+
+                        Bundle b = new Bundle();
+                        b.putString("temp",celciusTemp.toString());
+                        b.putString("cond",tempCond);
+                        Intent I = new Intent(getBaseContext(),WeatherResult.class);
+                        I.putExtras(b);
+                        startActivity(I);
+                    }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                     runOnUiThread(new Runnable() {
@@ -81,12 +106,12 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             } else {
-                Log.e(TAG, "Couldn't get json from server.");
+                Log.e(TAG, "Couldn't get data from server.");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                "Check city name provided",
                                 Toast.LENGTH_LONG)
                                 .show();
                     }
